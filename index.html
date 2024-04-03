@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .outgoing {
+background-color: rgb(169, 255, 192);
+color:black;
+font-style:oblique;
+width:fit-content;
+padding-inline:5px; 
+position: relative;
+align-self: self-end;
+border-radius: 5%;
+}
+.incoming {
+    position:relative;
+  background-color:white;
+  font-size:xx-small;
+  font-style:oblique;
+  color:black;
+  padding-inline:5px; 
+  width:fit-content;
+  border-radius: 5%;
+
+  }
+  .massege_container{
+    width: 100%;
+    position: relative;
+    font-size:xx-small;
+  font-style: normal;
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  #form{
+    position: fixed;
+    bottom: 0px;
+  }
+  #form{
+    width: 100%;
+  }
+  #inputDiv{
+    width:100%;
+    display: flex;
+    
+    
+  }
+  #input{
+    padding-block: 7px;
+    width: 100%;
+  }
+  #button{
+    width:5rem;
+    background:#0e02eb;
+    color: white;
+    margin-right: 8px;
+  }
+  #button:hover{
+    background: #181fae;
+  }
+    </style>
+</head>
+<body style="background-color: beige;">
+    <section>
+    <div class="massege_container">
+     
+    </div>
+   
+    <form id="form">
+        <div id="inputDiv">
+            <input id="input" type="text" placeholder="Message"/>
+            <button  id="button" type="submit">Send</button>
+        </div>
+    </form>
+</section>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket=io()
+// let name;
+// do{
+//     name=prompt("Enter userName")
+// }while(!name)
+const input=document.querySelector('#input')
+const form=document.querySelector('#form')
+const massege_container=document.querySelector('.massege_container')
+function appendmsg(msg,type){
+    const list=document.createElement('div')  
+    let className=type
+    list.classList.add(className,)
+    let markup=`
+    <h1>${msg}</h1>
+     `
+    list.innerHTML=markup
+    massege_container.appendChild(list)
+  }
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    if(input.value){
+      socket.emit('message',input.value)
+     appendmsg(input.value,'outgoing')
+     input.value=""
+    }})
+     socket.on("message",(msg)=>{
+        console.log("dfgdg"+msg);
+        appendmsg(msg,"incoming")
+        massege_container.scrollTop=massege_container.scrollHeight
+     })
+</script>
+</body>
+</html>
